@@ -47,6 +47,9 @@ This will automatically:
 - Install Node.js if not present
 - Install pnpm if not present
 - Set up Playwright with Chromium
+- Launch a Playwright browser instance at `https://x.com/i/flow/login` to authenticate
+
+Once the browser is launched, please enter your Twitter username and password (and 2FA code if applicable) to authenticate.
 
 ## Usage
 

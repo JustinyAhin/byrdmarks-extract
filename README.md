@@ -4,12 +4,22 @@ Byrdmarks Extract is a specialized tool designed to create backups from 𝕏 (pr
 
 It serves as a companion to [Byrdmarks](https://byrdmarks.com), an advanced bookmarks management application for 𝕏 that offers semantic search, filtering, and categorization capabilities.
 
+## Privacy & Security
+
+Byrdmarks Extract operates entirely on your local device:
+
+- Authentication state is stored locally on your device
+- Bookmark data is saved as local files only
+- No data is transmitted to external servers
+- Complete control over your data remains with you
+
 ## Features
 
 - Automated bookmark extraction from 𝕏 accounts
 - Cross-platform compatibility (Linux, macOS, Windows)
 - Authenticated access handling
 - Reliable data backup creation
+- Fully private, local-first architecture
 
 ## Prerequisites
 

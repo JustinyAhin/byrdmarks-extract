@@ -1,6 +1,8 @@
 # Byrdmarks Extract
 
-Byrdmarks Extract is a specialized tool designed to create backups of 𝕏 (previously Twitter) user bookmarks. It serves as a companion to [Byrdmarks](https://byrdmarks.com), an advanced bookmarks management application for 𝕏 that offers semantic search, filtering, and categorization capabilities.
+Byrdmarks Extract is a specialized tool designed to create backups from 𝕏 (previously Twitter) users' bookmarks.
+
+It serves as a companion to [Byrdmarks](https://byrdmarks.com), an advanced bookmarks management application for 𝕏 that offers semantic search, filtering, and categorization capabilities.
 
 ## Features
 

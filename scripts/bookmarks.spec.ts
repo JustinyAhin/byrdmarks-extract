@@ -3,11 +3,11 @@ import { checkAuthFileExists, loadBackup, saveBackup } from "../utils/files";
 import { BookmarkData } from "../utils/types";
 import { getAuthenticatedPage } from "../utils/auth";
 import { extractBookmarkData } from "../utils/bookmarks";
-import { BATCH_SIZE } from "../utils/consts";
+import { BATCH_SIZE, BOOKMARKS_TEST_TIMEOUT } from "../utils/consts";
 import { isBottom, scrollWithRetry } from "../utils/misc";
 
 test("collect bookmarks with continuous backup", async () => {
-  test.setTimeout(5 * 60 * 1000);
+  test.setTimeout(BOOKMARKS_TEST_TIMEOUT);
 
   const hasAuth = await checkAuthFileExists();
   if (!hasAuth) {

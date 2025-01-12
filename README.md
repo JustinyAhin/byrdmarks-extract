@@ -46,6 +46,7 @@ This will automatically:
 
 - Install Node.js if not present
 - Install pnpm if not present
+- Install pnpm dependencies
 - Set up Playwright with Chromium
 - Launch a Playwright browser instance at `https://x.com/i/flow/login` to authenticate
 

@@ -11,6 +11,8 @@ if ! check_command "pnpm"; then
     install_dependency "pnpm"
 fi
 
+pnpm install
+
 if [ ! -d "$(get_playwright_path)" ]; then
     install_dependency "playwright"
 fi

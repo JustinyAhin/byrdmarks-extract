@@ -106,41 +106,6 @@ const extractBookmarkData = async (page: Page): Promise<BookmarkData[]> => {
   for (const tweet of tweets) {
     const tweetData = await tweet.evaluate(extractSingleTweetData);
     bookmarks.push(tweetData);
-
-    // // Check if tweet has "Show more" button
-    // const hasShowMore = await tweet.$(
-    //   '[data-testid="tweet-text-show-more-link"]'
-    // );
-
-    // if (hasShowMore) {
-    //   // Get tweet URL
-    //   const tweetUrl = await tweet.$eval(
-    //     'a[href*="/status/"]',
-    //     (el: HTMLLinkElement) => el.href
-    //   );
-
-    //   // Open tweet in new tab
-    //   const tweetPage = await page.context().newPage();
-    //   await tweetPage.goto(tweetUrl);
-
-    //   // Wait for tweet content to load
-    //   await tweetPage.waitForSelector('[data-testid="tweet"]');
-
-    //   // Extract data from expanded tweet
-    //   const expandedTweetData = await tweetPage.$eval(
-    //     '[data-testid="tweet"]',
-    //     extractSingleTweetData
-    //   );
-
-    //   bookmarks.push(expandedTweetData);
-
-    //   // Close the tab
-    //   await tweetPage.close();
-    // } else {
-    //   // Extract data from regular tweet
-    //   const tweetData = await tweet.evaluate(extractSingleTweetData);
-    //   bookmarks.push(tweetData);
-    // }
   }
 
   return bookmarks;

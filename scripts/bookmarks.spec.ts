@@ -18,7 +18,14 @@ test("collect bookmarks with continuous backup", async () => {
 
   const { page, close } = await getAuthenticatedPage();
   let allBookmarks: BookmarkData[] = await loadBackup();
-  console.log(`Loaded ${allBookmarks.length} bookmarks from backup`);
+  const initialBookmarkCount: number = allBookmarks.length;
+  let newBookmarksFound: number = 0;
+
+  console.log(`Loaded ${initialBookmarkCount} bookmarks from backup`);
+
+  const existingBookmarkIds = new Set(
+    allBookmarks.map((bookmark) => bookmark.tweetId)
+  );
 
   try {
     await page.goto("https://x.com/i/bookmarks");
@@ -33,22 +40,20 @@ test("collect bookmarks with continuous backup", async () => {
       let addedItems = 0;
 
       for (const bookmark of newBookmarks) {
-        const isDuplicate = allBookmarks.some(
-          (existing: BookmarkData): boolean =>
-            existing.timestamp === bookmark.timestamp &&
-            existing.text === bookmark.text
-        );
-
-        if (!isDuplicate) {
+        if (!existingBookmarkIds.has(bookmark.tweetId)) {
           allBookmarks.push(bookmark);
+          existingBookmarkIds.add(bookmark.tweetId);
           addedItems++;
+          newBookmarksFound++;
         }
       }
 
       newItemsSinceLastSave += addedItems;
       if (newItemsSinceLastSave >= BATCH_SIZE) {
         await saveBackup(allBookmarks);
-        console.log(`Saved backup with ${allBookmarks.length} bookmarks`);
+        console.log(
+          `Saved backup with ${allBookmarks.length} bookmarks (${newBookmarksFound} new)`
+        );
         newItemsSinceLastSave = 0;
       }
 
@@ -67,18 +72,28 @@ test("collect bookmarks with continuous backup", async () => {
       }
       previousHeight = currentHeight;
 
-      console.log(
-        `Collected ${allBookmarks.length} unique bookmarks so far...`
-      );
+      if (addedItems > 0) {
+        console.log(
+          `Found ${newBookmarksFound} new bookmarks (total: ${allBookmarks.length})`
+        );
+      }
     }
 
     await saveBackup(allBookmarks);
-    console.log(`Finished collecting ${allBookmarks.length} bookmarks`);
+    console.log(
+      `Finished collecting bookmarks:\n` +
+        `- Initial count: ${initialBookmarkCount}\n` +
+        `- New bookmarks: ${newBookmarksFound}\n` +
+        `- Total count: ${allBookmarks.length}`
+    );
   } catch (error) {
     console.error("Error during bookmark collection:", error);
     if (allBookmarks.length > 0) {
       await saveBackup(allBookmarks);
-      console.log(`Saved ${allBookmarks.length} bookmarks before error`);
+      console.log(
+        `Saved ${allBookmarks.length} bookmarks before error ` +
+          `(${newBookmarksFound} new)`
+      );
     }
     throw error;
   } finally {

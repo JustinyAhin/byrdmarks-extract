@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import { AUTH_FILE, BACKUP_FILE } from "./consts";
 import path from "path";
-import { BookmarkData } from "../scripts/types";
+import { BookmarkData } from "./types";
 
 const checkAuthFileExists = async (): Promise<boolean> => {
   try {

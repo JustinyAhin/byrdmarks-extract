@@ -1,8 +1,10 @@
 import test from "@playwright/test";
-import { AUTH_FILE } from "../utils/consts";
+import { AUTH_FILE, AUTH_TEST_TIMEOUT } from "../utils/consts";
 import { getUnauthenticatedPage } from "../utils/auth";
 
 test("store auth state", async () => {
+  test.setTimeout(AUTH_TEST_TIMEOUT);
+
   const { page, context, close } = await getUnauthenticatedPage();
 
   try {

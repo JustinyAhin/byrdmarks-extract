@@ -3,7 +3,6 @@ import { AUTH_FILE } from "./consts";
 
 const getUnauthenticatedPage = async () => {
   const browser = await chromium.launch({
-    timeout: 60000,
     headless: false,
     slowMo: 1000,
   });
@@ -25,7 +24,6 @@ const getUnauthenticatedPage = async () => {
 
 const getAuthenticatedPage = async () => {
   const browser = await chromium.launch({
-    timeout: 60000,
     slowMo: 500,
   });
   const context = await browser.newContext({

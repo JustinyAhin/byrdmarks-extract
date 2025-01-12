@@ -1,12 +1,12 @@
-# Byrdmarks Extract
+# ByrdMarks Extract
 
-Byrdmarks Extract is a specialized tool designed to create backups from 𝕏 (previously Twitter) users' bookmarks.
+ByrdMarks Extract is a specialized tool designed to create backups from 𝕏 (previously Twitter) users' bookmarks.
 
-It serves as a companion to [Byrdmarks](https://byrdmarks.com), an advanced bookmarks management application for 𝕏 that offers semantic search, filtering, and categorization capabilities.
+It serves as a companion to [ByrdMarks](https://byrdmarks.com), an advanced bookmarks management application for 𝕏 that offers semantic search, filtering, and categorization capabilities.
 
 ## Privacy & Security
 
-Byrdmarks Extract operates entirely on your local device:
+ByrdMarks Extract operates entirely on your local device:
 
 - Authentication state is stored locally on your device
 - Bookmark data is saved as local files only
@@ -65,7 +65,7 @@ The extracted bookmarks will be saved in the `.data/bookmarks_backup.json` file.
 
 ## Related Projects
 
-- [Byrdmarks](https://byrdmarks.com) - The main application offering advanced bookmark management for 𝕏 with features including:
+- [ByrdMarks](https://byrdmarks.com) - The main application offering advanced bookmark management for 𝕏 with features including:
   - Semantic search
   - Custom filtering
   - Bookmark categorization

@@ -2,7 +2,7 @@ type TweetMetrics = {
     replies: number;
     reposts: number;
     likes: number;
-    views: number;
+    views: number | null;
   };
   
   type TweetMedia = {

@@ -20,6 +20,10 @@ test("collect bookmarks with continuous backup", async () => {
   let allBookmarks: BookmarkData[] = await loadBackup();
   const initialBookmarkCount: number = allBookmarks.length;
   let newBookmarksFound: number = 0;
+  let totalDuplicatesFound: number = 0;
+
+  // Keep track of processed tweets in current session
+  const processedTweetIds = new Set<string>();
 
   console.log(`Loaded ${initialBookmarkCount} bookmarks from backup`);
 
@@ -38,9 +42,23 @@ test("collect bookmarks with continuous backup", async () => {
     while (!reachedBottom) {
       const newBookmarks: BookmarkData[] = await extractBookmarkData(page);
       let addedItems = 0;
+      let currentBatchDuplicates = 0;
 
       for (const bookmark of newBookmarks) {
-        if (!existingBookmarkIds.has(bookmark.tweetId)) {
+        // Skip if we've already processed this tweet in current session
+        if (processedTweetIds.has(bookmark.tweetId)) {
+          continue;
+        }
+
+        processedTweetIds.add(bookmark.tweetId);
+
+        if (existingBookmarkIds.has(bookmark.tweetId)) {
+          currentBatchDuplicates++;
+          totalDuplicatesFound++;
+          console.log(
+            `Found duplicate: Tweet ID ${bookmark.tweetId} by @${bookmark.authorUsername}`
+          );
+        } else {
           allBookmarks.push(bookmark);
           existingBookmarkIds.add(bookmark.tweetId);
           addedItems++;
@@ -48,11 +66,17 @@ test("collect bookmarks with continuous backup", async () => {
         }
       }
 
+      if (currentBatchDuplicates > 0) {
+        console.log(
+          `Found ${currentBatchDuplicates} new duplicates in current batch`
+        );
+      }
+
       newItemsSinceLastSave += addedItems;
       if (newItemsSinceLastSave >= BATCH_SIZE) {
         await saveBackup(allBookmarks);
         console.log(
-          `Saved backup with ${allBookmarks.length} bookmarks (${newBookmarksFound} new)`
+          `Saved backup with ${allBookmarks.length} bookmarks (${newBookmarksFound} new, ${totalDuplicatesFound} total duplicates)`
         );
         newItemsSinceLastSave = 0;
       }
@@ -72,9 +96,9 @@ test("collect bookmarks with continuous backup", async () => {
       }
       previousHeight = currentHeight;
 
-      if (addedItems > 0) {
+      if (addedItems > 0 || currentBatchDuplicates > 0) {
         console.log(
-          `Found ${newBookmarksFound} new bookmarks (total: ${allBookmarks.length})`
+          `Progress: ${newBookmarksFound} new, ${totalDuplicatesFound} duplicates (total bookmarks: ${allBookmarks.length})`
         );
       }
     }
@@ -84,7 +108,8 @@ test("collect bookmarks with continuous backup", async () => {
       `Finished collecting bookmarks:\n` +
         `- Initial count: ${initialBookmarkCount}\n` +
         `- New bookmarks: ${newBookmarksFound}\n` +
-        `- Total count: ${allBookmarks.length}`
+        `- Unique duplicates found: ${totalDuplicatesFound}\n` +
+        `- Final total count: ${allBookmarks.length}`
     );
   } catch (error) {
     console.error("Error during bookmark collection:", error);
@@ -92,7 +117,7 @@ test("collect bookmarks with continuous backup", async () => {
       await saveBackup(allBookmarks);
       console.log(
         `Saved ${allBookmarks.length} bookmarks before error ` +
-          `(${newBookmarksFound} new)`
+          `(${newBookmarksFound} new, ${totalDuplicatesFound} duplicates)`
       );
     }
     throw error;

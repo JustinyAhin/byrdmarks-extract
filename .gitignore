@@ -4,3 +4,7 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 .data/
+
+# OS
+.DS_Store
+Thumbs.db
